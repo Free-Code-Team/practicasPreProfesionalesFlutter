@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "771391070371",
+    "project_id": "free-code-team",
+    "storage_bucket": "free-code-team.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:771391070371:android:8b12fe62f45e0ae6419f16",
+        "android_client_info": {
+          "package_name": "upeu.edu.pe.practicas_pre_profesionales_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "771391070371-lvel711ah2enrq0dsgsoirlj2cv5qaff.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "upeu.edu.pe.practicas_pre_profesionales_flutter",
+            "certificate_hash": "8a1629b5b282525cc31998c85d980a44ce8c8e52"
+          }
+        },
+        {
+          "client_id": "771391070371-nblegpmlhtfcfpf35qkrm66clvovf4hv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKw_xFxh21ScYZ0LOgz6XzRGx8M12JirI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "771391070371-nblegpmlhtfcfpf35qkrm66clvovf4hv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
