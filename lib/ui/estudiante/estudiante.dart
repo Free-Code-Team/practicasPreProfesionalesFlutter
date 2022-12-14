@@ -1,5 +1,5 @@
 import 'package:practicas_pre_profesionales_flutter/bloc/auth/auth_bloc.dart';
-import 'package:practicas_pre_profesionales_flutter/ui/sign_in.dart';
+import 'package:practicas_pre_profesionales_flutter/ui/auth/sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

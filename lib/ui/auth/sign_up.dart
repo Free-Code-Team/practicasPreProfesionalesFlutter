@@ -1,7 +1,7 @@
 import 'package:practicas_pre_profesionales_flutter/bloc/auth/auth_bloc.dart';
-import 'package:practicas_pre_profesionales_flutter/ui/dashboard.dart';
-import 'package:practicas_pre_profesionales_flutter/ui/estudiante.dart';
-import 'package:practicas_pre_profesionales_flutter/ui/sign_in.dart';
+import 'package:practicas_pre_profesionales_flutter/ui/admin/dashboard.dart';
+import 'package:practicas_pre_profesionales_flutter/ui/estudiante/estudiante.dart';
+import 'package:practicas_pre_profesionales_flutter/ui/auth/sign_in.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

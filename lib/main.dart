@@ -1,9 +1,11 @@
 import 'package:practicas_pre_profesionales_flutter/bloc/auth/auth_bloc.dart';
-import 'package:practicas_pre_profesionales_flutter/bloc/solicitud/solicitud_bloc.dart';
 import 'package:practicas_pre_profesionales_flutter/repositories/auth_repository.dart';
 import 'package:practicas_pre_profesionales_flutter/repositories/solicitud_repository.dart';
-import 'package:practicas_pre_profesionales_flutter/ui/dashboard.dart';
-import 'package:practicas_pre_profesionales_flutter/ui/sign_in.dart';
+import 'package:practicas_pre_profesionales_flutter/ui/admin/dashboard.dart';
+import 'package:practicas_pre_profesionales_flutter/ui/admin/solicitud/solicitud_add.dart';
+import 'package:practicas_pre_profesionales_flutter/ui/admin/solicitud/solicitud_edit.dart';
+import 'package:practicas_pre_profesionales_flutter/ui/admin/solicitud/solicitud_home.dart';
+import 'package:practicas_pre_profesionales_flutter/ui/auth/sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -29,29 +31,26 @@ class MyApp extends StatelessWidget {
           create: (context) => SolicitudRepository(),
         ),
       ],
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (context) =>
-                AuthBloc(
-                  authRepository: RepositoryProvider.of<AuthRepository>(
-                      context),
-                ),
-          ),
-          BlocProvider(
-            create: (context) => SolicitudBloc(RepositoryProvider.of<SolicitudRepository>(context),)..add(LoadSolicitudEvent()),
-          ),
-        ],
+      child: BlocProvider(
+        create: (context) =>
+            AuthBloc(
+              authRepository: RepositoryProvider.of<AuthRepository>(context),
+            ),
         child: MaterialApp(
+          initialRoute: '/',
+          routes: {
+            '/dashboard': (context) => const Dashboard(),
+            '/solicitud_home': (context) => const SolicitudHome(),
+            '/solicitud_add': (context) => const SolicitudAdd(),
+            '/solicitud_edit': (context) => SolicitudEdit(),
+          },
           debugShowCheckedModeBanner: false,
           home: StreamBuilder<User?>(
               stream: FirebaseAuth.instance.authStateChanges(),
               builder: (context, snapshot) {
-                // If the snapshot has user data, then they're already signed in. So Navigating to the Dashboard.
                 if (snapshot.hasData) {
                   return const Dashboard();
                 }
-                // Otherwise, they're not signed in. Show the sign in page.
                 return const SignIn();
               }),
         ),

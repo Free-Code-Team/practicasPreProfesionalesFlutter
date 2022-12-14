@@ -1,38 +1,41 @@
-import 'package:practicas_pre_profesionales_flutter/models/solicitud_model.dart';
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
+import 'package:practicas_pre_profesionales_flutter/models/solicitud/response.dart';
+import 'package:practicas_pre_profesionales_flutter/models/solicitud/solicitud.dart';
 
 class SolicitudRepository {
-  static const String baseUrl = "http://10.0.2.2:8000/api";
+  static const String _baseUrl = "http://10.0.2.2:8000/api";
 
-  Future<ResModel> getAllSolicitudes() async {
-    var response = await http.get(Uri.parse("$baseUrl/solicitudes"));
+  Future<Response> getAllSolicitudes() async {
+    final response = await http.get(Uri.parse('$_baseUrl/solicitudes'));
     if (response.statusCode == 200) {
-      return ResModel.fromJson(json.decode(response.body));
+      return Response.fromJson(json.decode(response.body));
     } else {
-      throw Exception("Falló la conexión al listar las solicitudes.");
+      throw Exception("Failed to load joke");
     }
   }
 
-  /*Future<User> getUserById(String id) async {
-    var response = await http.get("$baseUrl/users/$id?$apiKey");
-    var jsonUser = json.decode(response.body);
-    User user = User.fromJson(jsonUser);
-    return user;
+  Future<Solicitud> getSolicitudById(int id) async {
+    var response = await http.get(Uri.parse("$_baseUrl/solicitudes/$id"));
+    print(response.statusCode);
+    print(response.body);
+    var jsonSolicitud = Solicitud.fromJson(json.decode(response.body));
+    return jsonSolicitud;
   }
 
-  Future<bool> createUser(User user) async {
+  Future<bool> addSolicitud(Solicitud solicitud) async {
     var response = await http.post(
-      "$baseUrl/users?$apiKey",
+      Uri.parse("$_baseUrl/solicitudes"),
       headers: {"Content-Type": "application/json"},
       body: json.encode(
-        user.toJson(),
+        solicitud.toJson(),
       ),
     );
     return response.statusCode == 200;
   }
 
-  Future<bool> updateUser(User user) async {
+  /*Future<bool> updateUser(User user) async {
     var response = await http.put(
       "$baseUrl/users/${user.id}?$apiKey",
       headers: {"Content-Type": "application/json"},
