@@ -1,9 +1,12 @@
 import 'package:practicas_pre_profesionales_flutter/bloc/auth/auth_bloc.dart';
 import 'package:practicas_pre_profesionales_flutter/repositories/auth_repository.dart';
+import 'package:practicas_pre_profesionales_flutter/repositories/empresa_repository.dart';
 import 'package:practicas_pre_profesionales_flutter/repositories/estudiante_repository.dart';
 import 'package:practicas_pre_profesionales_flutter/repositories/persona_repository.dart';
 import 'package:practicas_pre_profesionales_flutter/repositories/solicitud_repository.dart';
 import 'package:practicas_pre_profesionales_flutter/ui/admin/dashboard.dart';
+import 'package:practicas_pre_profesionales_flutter/ui/admin/empresas/empresa_add.dart';
+import 'package:practicas_pre_profesionales_flutter/ui/admin/empresas/empresa_home.dart';
 import 'package:practicas_pre_profesionales_flutter/ui/admin/estudiante/estudiante_home.dart';
 import 'package:practicas_pre_profesionales_flutter/ui/admin/solicitud/solicitud_add.dart';
 import 'package:practicas_pre_profesionales_flutter/ui/admin/solicitud/solicitud_edit.dart';
@@ -42,6 +45,9 @@ class MyApp extends StatelessWidget {
         RepositoryProvider(
           create: (context) => PersonaRepository(),
         ),
+        RepositoryProvider(
+          create: (context) => EmpresaRepository(),
+        ),
       ],
       child: BlocProvider(
         create: (context) => AuthBloc(
@@ -56,6 +62,8 @@ class MyApp extends StatelessWidget {
             '/solicitud_show': (context) => SolicitudShow(),
             '/estudiante_home': (context) => const EstudianteHome(),
             '/usuario_home': (context) => const UsuarioHome(),
+            '/empresa_home': (context) => const EmpresaHome(),
+            '/empresa_add': (context) => const EmpresaAdd(),
             '/test': (context) => TestContent(),
           },
           debugShowCheckedModeBanner: false,
