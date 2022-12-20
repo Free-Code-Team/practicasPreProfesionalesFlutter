@@ -17,9 +17,9 @@ class SolicitudAdd extends StatefulWidget {
 class _SolicitudAddState extends State<SolicitudAdd> {
   final _formKey = GlobalKey<FormState>();
   final tfRepresentante = TextEditingController();
-  final tfEstado = TextEditingController();
-  final tfIdEstudiante = TextEditingController();
-  final tfIdEmpresa = TextEditingController();
+  final tfEstado = TextEditingController(text: '1');
+  final tfIdEstudiante = TextEditingController(text: '1');
+  final tfIdEmpresa = TextEditingController(text: '1');
   String? gender;
 
   @override
@@ -45,7 +45,7 @@ class _SolicitudAddState extends State<SolicitudAdd> {
                     idEmpresa: int.parse(tfIdEmpresa.text));
                 BlocProvider.of<SolicitudBloc>(context)
                     .add(SolicitudSaveEvent(solicitud, null));
-                Navigator.pushNamed(context, '/empresa_home');
+                Navigator.pushNamed(context, '/solicitud_home');
               },
             );
           },
@@ -87,14 +87,6 @@ class _SolicitudAddState extends State<SolicitudAdd> {
                           labelText: 'Representante',
                         ),
                       ),
-                      TextFormField(
-                        controller: tfIdEmpresa,
-                        decoration: const InputDecoration(
-                          icon: Icon(Icons.calendar_today),
-                          hintText: 'Ingrese la empresa (ID)',
-                          labelText: 'Empresa',
-                        ),
-                      ),
                     ],
                   ),
                 ),
@@ -106,3 +98,4 @@ class _SolicitudAddState extends State<SolicitudAdd> {
     );
   }
 }
+
