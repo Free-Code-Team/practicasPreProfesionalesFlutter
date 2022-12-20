@@ -76,29 +76,11 @@ class DrawerAdmin extends StatelessWidget {
                   ),
                   ListTile(
                     leading: const Icon(
-                      Icons.account_box,
-                    ),
-                    title: const Text('Estudiantes'),
-                    onTap: () {
-                      Navigator.pushNamed(context, '/estudiante_home');
-                    },
-                  ),
-                  ListTile(
-                    leading: const Icon(
                       Icons.business,
                     ),
                     title: const Text('Usuarios'),
                     onTap: () {
                       Navigator.pushNamed(context, '/usuario_home');
-                    },
-                  ),
-                  ListTile(
-                    leading: const Icon(
-                      Icons.business,
-                    ),
-                    title: const Text('Cerrar sesión'),
-                    onTap: () {
-                      BlocProvider.of<AuthBloc>(context).add(DesautenticarEvent());
                     },
                   ),
                 ],

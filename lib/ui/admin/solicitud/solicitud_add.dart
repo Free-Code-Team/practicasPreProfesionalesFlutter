@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:practicas_pre_profesionales_flutter/bloc/auth/auth_bloc.dart';
+import 'package:practicas_pre_profesionales_flutter/bloc/empresa/empresa_bloc.dart';
 import 'package:practicas_pre_profesionales_flutter/bloc/solicitud/solicitud_bloc.dart';
 import 'package:practicas_pre_profesionales_flutter/repositories/solicitud_repository.dart';
 
@@ -26,7 +28,48 @@ class _SolicitudAddState extends State<SolicitudAdd> {
       create: (context) => SolicitudBloc(
           RepositoryProvider.of<SolicitudRepository>(context, listen: false)),
       child: Scaffold(
-        appBar: AppBar(title: const Text('Hola')),
+        appBar: AppBar(
+          title: const Text('Registrar empresa'),
+          backgroundColor: Colors.blue[900],
+        ),
+        floatingActionButton: BlocBuilder<SolicitudBloc, SolicitudState>(
+          builder: (context, state) {
+            return FloatingActionButton(
+              backgroundColor: Colors.red,
+              child: const Icon(Icons.save),
+              onPressed: () {
+                Solicitud solicitud = Solicitud(
+                    representante: tfRepresentante.text,
+                    estado: tfEstado.text,
+                    idEstudiante: int.parse(tfIdEstudiante.text),
+                    idEmpresa: int.parse(tfIdEmpresa.text));
+                BlocProvider.of<SolicitudBloc>(context)
+                    .add(SolicitudSaveEvent(solicitud, null));
+                Navigator.pushNamed(context, '/empresa_home');
+              },
+            );
+          },
+        ),
+        bottomNavigationBar: BottomAppBar(
+          color: Colors.blue[900],
+          child: Row(
+            children: [
+              IconButton(
+                  icon: const Icon(Icons.account_circle),
+                  color: Colors.white,
+                  onPressed: () {}),
+              const Spacer(),
+              IconButton(
+                  icon: const Icon(Icons.logout),
+                  color: Colors.white,
+                  onPressed: () {
+                    BlocProvider.of<AuthBloc>(context)
+                        .add(DesautenticarEvent());
+                  }),
+            ],
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         body: BlocBuilder<SolicitudBloc, SolicitudState>(
           builder: (context, state) {
             return ListView(children: [
@@ -45,14 +88,6 @@ class _SolicitudAddState extends State<SolicitudAdd> {
                         ),
                       ),
                       TextFormField(
-                        controller: tfIdEstudiante,
-                        decoration: const InputDecoration(
-                          icon: Icon(Icons.calendar_today),
-                          hintText: 'Ingrese al estudiante (ID)',
-                          labelText: 'Estudiante',
-                        ),
-                      ),
-                      TextFormField(
                         controller: tfIdEmpresa,
                         decoration: const InputDecoration(
                           icon: Icon(Icons.calendar_today),
@@ -60,77 +95,6 @@ class _SolicitudAddState extends State<SolicitudAdd> {
                           labelText: 'Empresa',
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20),
-                        child: Column(
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.only(bottom: 10),
-                              child: Text("Ingrese el estado", style: TextStyle(
-                                  fontSize: 18,
-                                color: Colors.black54
-                              ),),
-                            ),
-                            RadioListTile(
-                              title: Text("Aceptado"),
-                              value: "1",
-                              groupValue: gender,
-                              onChanged: (value) {
-                                setState(() {
-                                  gender = value.toString();
-                                });
-                              },
-                            ),
-                            RadioListTile(
-                              title: Text("Rechazado"),
-                              value: "0",
-                              groupValue: gender,
-                              onChanged: (value) {
-                                setState(() {
-                                  gender = value.toString();
-                                });
-                              },
-                            ),
-                            RadioListTile(
-                              title: Text("Cancelado"),
-                              value: "0",
-                              groupValue: gender,
-                              onChanged: (value) {
-                                setState(() {
-                                  gender = value.toString();
-                                });
-                              },
-                            ),
-                            RadioListTile(
-                              title: Text("En proceso"),
-                              value: "other",
-                              groupValue: gender,
-                              onChanged: (value) {
-                                setState(() {
-                                  gender = value.toString();
-                                });
-                              },
-                            )
-                          ],
-                        ),
-                      ),
-                      Container(
-                          padding:
-                              const EdgeInsets.only(left: 150.0, top: 40.0),
-                          child: MaterialButton(
-                            onPressed: () {
-                              Solicitud solicitud = Solicitud(
-                                  representante: tfRepresentante.text,
-                                  estado: tfEstado.text,
-                                  idEstudiante: int.parse(tfIdEstudiante.text),
-                                  idEmpresa: int.parse(tfIdEmpresa.text));
-                              BlocProvider.of<SolicitudBloc>(context)
-                                  .add(SolicitudSaveEvent(solicitud, null));
-                              Navigator.pushNamed(context, '/solicitud_home');
-                            },
-                            color: Colors.lightGreenAccent,
-                            child: const Text('Submit'),
-                          )),
                     ],
                   ),
                 ),

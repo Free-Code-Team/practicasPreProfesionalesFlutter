@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:practicas_pre_profesionales_flutter/bloc/auth/auth_bloc.dart';
 import 'package:practicas_pre_profesionales_flutter/bloc/solicitud/solicitud_bloc.dart';
 import 'package:practicas_pre_profesionales_flutter/models/solicitud/solicitud.dart';
 import 'package:practicas_pre_profesionales_flutter/repositories/solicitud_repository.dart';
@@ -87,12 +88,37 @@ class SolicitudHomeState extends State<SolicitudHome> {
         ..add(SolicitudListEvent()),
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
-            child: const Icon(Icons.add),
-            onPressed: () {
-              Navigator.pushNamed(context, '/solicitud_add');
-            }),
+          backgroundColor: Colors.red,
+          child: const Icon(Icons.add),
+          onPressed: () {
+            Navigator.pushNamed(context, '/solicitud_add');
+          },
+        ),
+        floatingActionButtonLocation:
+        FloatingActionButtonLocation.centerDocked,
+        bottomNavigationBar: BottomAppBar(
+          color: Colors.blue[900],
+          child: Row(
+            children: [
+              IconButton(
+                  icon: const Icon(Icons.account_circle),
+                  color: Colors.white,
+                  onPressed: () {}),
+              const Spacer(),
+              IconButton(
+                  icon: const Icon(Icons.logout),
+                  color: Colors.white,
+                  onPressed: () {
+                    BlocProvider.of<AuthBloc>(context)
+                        .add(DesautenticarEvent());
+                  }),
+            ],
+          ),
+        ),
         appBar: AppBar(
           title: const Text('Solicitudes'),
+          centerTitle: true,
+          backgroundColor: Colors.blue[900],
         ),
         drawer: const DrawerAdmin(),
         body: BlocBuilder<SolicitudBloc, SolicitudState>(
@@ -120,101 +146,3 @@ class SolicitudHomeState extends State<SolicitudHome> {
     );
   }
 }
-
-/*
-DropdownSearch(
-                mode: Mode.DIALOG,
-                items: ["Brazil", "France", "Tunisia", "Canada", "sadasd", "asdsad", "sdsad", "asdsad", "sdasd", "saww2"],
-                dropdownSearchDecoration: InputDecoration(labelText: "Name"),
-                onChanged: print,
-                selectedItem: "Tunisia",
-                validator: (String? item) {
-                  if (item == null) return "Required field";
-                  else if (item == "Brazil") return "Invalid item";
-                  else return null;
-                },
-                : 150,
-              );
- */
-
-/*
-
-Container(
-                  alignment: Alignment.topCenter,
-                  padding: EdgeInsets.all(10),
-                  child: DropdownButton<String>(
-                    isExpanded: true,
-                    onChanged: (value) {
-                      setState(() {
-                        _value = value!;
-                      });
-                    },
-                    value: _value,
-                    items: [
-                      DropdownMenuItem(
-                        value: "1",
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Icon(
-                              Icons.description,
-                              color: Colors.red,
-                            ),
-                            SizedBox(width: 10),
-                            Text(
-                              "Rechazados",
-                            ),
-                          ],
-                        ),
-                      ),
-                      DropdownMenuItem(
-                        value: "2",
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Icon(
-                              Icons.description,
-                              color: Colors.teal,
-                            ),
-                            SizedBox(width: 10),
-                            Text(
-                              "Aceptados",
-                            ),
-                          ],
-                        ),
-                      ),
-                      DropdownMenuItem(
-                        value: "3",
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Icon(
-                              Icons.description,
-                              color: Colors.deepOrange,
-                            ),
-                            SizedBox(width: 10),
-                            Text(
-                              "En proceso",
-                            ),
-                          ],
-                        ),
-                      ),
-                      DropdownMenuItem(
-                        value: "4",
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Icon(
-                              Icons.description,
-                              color: Colors.pink,
-                            ),
-                            SizedBox(width: 10),
-                            Text(
-                              "Eliminados",
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ));
- */
