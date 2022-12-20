@@ -47,6 +47,13 @@ dependencies:
   http:
   json_annotation:
   expandable_datatable: ^0.0.6
+  animated_float_action_button: ^1.0.3
+  syncfusion_flutter_charts: ^19.2.62
+  checkbox_grouped: ^1.8.0
+  dropdown_formfield: ^0.1.4
+  data_connection_checker: ^0.3.4
+  dropdown_search: ^3.0.1
+  dio: ^4.0.6
 
 dev_dependencies:
   flutter_test:
@@ -77,6 +84,8 @@ flutter:
       - assets/icons/google.png
       - assets/icons/facebook300.png
       - assets/icons/google300.png
+      - assets/icons/user.png
+      - assets/icons/fondo.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

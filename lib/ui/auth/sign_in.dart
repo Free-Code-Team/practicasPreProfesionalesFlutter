@@ -1,7 +1,7 @@
 import 'package:practicas_pre_profesionales_flutter/bloc/auth/auth_bloc.dart';
 import 'package:practicas_pre_profesionales_flutter/ui/admin/dashboard.dart';
 import 'package:practicas_pre_profesionales_flutter/ui/desconocido/desconocido.dart';
-import 'package:practicas_pre_profesionales_flutter/ui/estudiante/estudiante.dart';
+import 'package:practicas_pre_profesionales_flutter/ui/estudiante/estudianteUI.dart';
 import 'package:practicas_pre_profesionales_flutter/ui/auth/sign_up.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
@@ -16,13 +16,13 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
   final _formKey = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
+  final _tfEmail = TextEditingController();
+  final _tfPassword = TextEditingController();
 
   @override
   void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
+    _tfEmail.dispose();
+    _tfPassword.dispose();
     super.dispose();
   }
 
@@ -31,12 +31,11 @@ class _SignInState extends State<SignIn> {
     return Scaffold(
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
-          if (state is Authenticated) {
-            // Navigating to the dashboard screen if the user is authenticated
-            if (state.rol == 'Estudiante') {
+          if (state is AutenticadoConExitoState) {
+            if (state.usuario.rol == 'Estudiante') {
               Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => const Estudiante()));
-            } else if (state.rol == 'Admin') {
+                  MaterialPageRoute(builder: (context) => const EstudianteUI()));
+            } else if (state.usuario.rol == 'Admin') {
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) => const Dashboard()));
             } else {
@@ -44,22 +43,19 @@ class _SignInState extends State<SignIn> {
                   MaterialPageRoute(builder: (context) => const Desconocido()));
             }
           }
-          if (state is AuthError) {
-            // Showing the error message if the user has entered invalid credentials
+          if (state is ErrorState) {
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text(state.error)));
           }
         },
         child: BlocBuilder<AuthBloc, AuthState>(
           builder: (context, state) {
-            if (state is Loading) {
-              // Showing the loading indicator while the user is signing in
+            if (state is CargandoState) {
               return const Center(
                 child: CircularProgressIndicator(),
               );
             }
-            if (state is UnAuthenticated) {
-              // Showing the sign in form if the user is not authenticated
+            if (state is DesautenticadoState) {
               return Center(
                 child: Padding(
                   padding: const EdgeInsets.only(
@@ -86,7 +82,7 @@ class _SignInState extends State<SignIn> {
                               children: [
                                 TextFormField(
                                   keyboardType: TextInputType.emailAddress,
-                                  controller: _emailController,
+                                  controller: _tfEmail,
                                   decoration: const InputDecoration(
                                     hintText: "Correo",
                                     border: OutlineInputBorder(
@@ -98,7 +94,7 @@ class _SignInState extends State<SignIn> {
                                   validator: (value) {
                                     return value != null &&
                                             !EmailValidator.validate(value)
-                                        ? 'Enter a valid email'
+                                        ? 'Ingrese un email válido'
                                         : null;
                                   },
                                 ),
@@ -107,7 +103,7 @@ class _SignInState extends State<SignIn> {
                                 ),
                                 TextFormField(
                                   keyboardType: TextInputType.text,
-                                  controller: _passwordController,
+                                  controller: _tfPassword,
                                   obscureText: true,
                                   decoration: const InputDecoration(
                                     hintText: "Contraseña",
@@ -119,7 +115,7 @@ class _SignInState extends State<SignIn> {
                                       AutovalidateMode.onUserInteraction,
                                   validator: (value) {
                                     return value != null && value.length < 6
-                                        ? "Enter min. 6 characters"
+                                        ? "Ingrese una contraseña válido"
                                         : null;
                                   },
                                 ),
@@ -153,26 +149,32 @@ class _SignInState extends State<SignIn> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Column(
-                              children: const [
-                                Text("¿No tienes una cuenta?"),
-                                /*Column(
+                              children: [
+                                const Text("¿No tienes una cuenta?"),
+                                Column(
                                   children: [
                                     TextButton(
                                       onPressed: () {
                                         Navigator.pushReplacement(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) => const SignUp()),
+                                              builder: (context) =>
+                                                  const SignUp()),
                                         );
                                       },
                                       child: const Text("Regístrate"),
                                     ),
                                   ],
-                                ),*/
-                                SizedBox(
+                                ),
+                                const SizedBox(
                                   height: 10,
                                 ),
-                                Text("Ingrese como invitado (Google o Facebook)", style: TextStyle(color: Colors.black45, ),),
+                                const Text(
+                                  "Ingrese como invitado (Google o Facebook)",
+                                  style: TextStyle(
+                                    color: Colors.black45,
+                                  ),
+                                ),
                               ],
                             ),
                           ],
@@ -219,14 +221,14 @@ class _SignInState extends State<SignIn> {
   void _authenticateWithEmailAndPassword(context) {
     if (_formKey.currentState!.validate()) {
       BlocProvider.of<AuthBloc>(context).add(
-        SignInRequested(_emailController.text, _passwordController.text),
+        IngresarEvent(_tfEmail.text, _tfPassword.text),
       );
     }
   }
 
   void _authenticateWithGoogle(context) {
     BlocProvider.of<AuthBloc>(context).add(
-      GoogleSignInRequested(),
+      AutenticarConGoogleEvent(),
     );
   }
 }

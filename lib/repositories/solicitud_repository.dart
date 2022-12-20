@@ -18,8 +18,6 @@ class SolicitudRepository {
 
   Future<Solicitud> getSolicitudById(int id) async {
     var response = await http.get(Uri.parse("$_baseUrl/solicitudes/$id"));
-    print(response.statusCode);
-    print(response.body);
     var jsonSolicitud = Solicitud.fromJson(json.decode(response.body));
     return jsonSolicitud;
   }
@@ -35,16 +33,16 @@ class SolicitudRepository {
     return response.statusCode == 200;
   }
 
-  /*Future<bool> updateUser(User user) async {
+  Future<bool> updateSolicitud(Solicitud solicitud) async {
     var response = await http.put(
-      "$baseUrl/users/${user.id}?$apiKey",
+      Uri.parse("$_baseUrl/solicitudes/${solicitud.id}"),
       headers: {"Content-Type": "application/json"},
-      body: json.encode(user.toJson()),
+      body: json.encode(solicitud.toJson()),
     );
     return response.statusCode == 200;
   }
 
-  Future<bool> deleteUser(String id) async {
+  /*Future<bool> deleteUser(String id) async {
     var response = await http.delete("$baseUrl/users/$id?$apiKey");
     return response.statusCode == 200;
   }*/

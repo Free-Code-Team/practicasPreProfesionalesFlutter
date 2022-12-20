@@ -25,8 +25,8 @@ class SolicitudEdit extends StatelessWidget {
           child: BlocBuilder<SolicitudBloc, SolicitudState>(
             builder: (context, state) {
               if (state is SolicitudSuccessShowState) {
-                final tfRepresentante = TextEditingController(text: '${state.solicitud.representante}');
-                final tfEstado = TextEditingController(text: '${state.solicitud.estado}');
+                final tfRepresentante = TextEditingController(text: state.solicitud.representante);
+                final tfEstado = TextEditingController(text: state.solicitud.estado);
                 final tfIdEstudiante = TextEditingController(text: '${state.solicitud.idEstudiante}');
                 final tfIdEmpresa = TextEditingController(text: '${state.solicitud.idEmpresa}');
                 return Form(
@@ -71,16 +71,17 @@ class SolicitudEdit extends StatelessWidget {
                           child: MaterialButton(
                             onPressed: () {
                               Solicitud solicitud = Solicitud(
+                                  id: state.solicitud.id,
                                   representante: tfRepresentante.text,
                                   estado: tfEstado.text,
                                   idEstudiante: int.parse(tfIdEstudiante.text),
                                   idEmpresa: int.parse(tfIdEmpresa.text));
                               BlocProvider.of<SolicitudBloc>(context)
-                                  .add(SolicitudAddEvent(solicitud));
+                                  .add(SolicitudSaveEvent(solicitud, args as int));
                               Navigator.pushNamed(context, '/solicitud_home');
                             },
-                            child: Text('Submit'),
                             color: Colors.lightGreenAccent,
+                            child: const Text('Guardar'),
                           )),
                     ],
                   ),

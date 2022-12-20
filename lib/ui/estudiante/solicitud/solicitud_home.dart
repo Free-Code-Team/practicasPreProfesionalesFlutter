@@ -1,4 +1,3 @@
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:practicas_pre_profesionales_flutter/bloc/solicitud/solicitud_bloc.dart';
@@ -6,16 +5,17 @@ import 'package:practicas_pre_profesionales_flutter/models/solicitud/solicitud.d
 import 'package:practicas_pre_profesionales_flutter/repositories/solicitud_repository.dart';
 import 'package:practicas_pre_profesionales_flutter/ui/admin/drawer_admin.dart';
 
-class EmpresaHome extends StatefulWidget {
-  const EmpresaHome({Key? key}) : super(key: key);
+class SolicitudHomeEstudiante extends StatefulWidget {
+  const SolicitudHomeEstudiante({Key? key}) : super(key: key);
 
   @override
-  State<EmpresaHome> createState() => _EmpresaHomeState();
+  State<SolicitudHomeEstudiante> createState() => _SolicitudHomeEstudianteState();
 }
 
-class _EmpresaHomeState extends State<EmpresaHome> {
+class _SolicitudHomeEstudianteState extends State<SolicitudHomeEstudiante> {
   List<Solicitud> responseData = [];
   late String _value;
+
   @override
   void initState() {
     super.initState();
@@ -45,7 +45,7 @@ class _EmpresaHomeState extends State<EmpresaHome> {
     return ListView(
       children: <Widget>[
         ...responseData.map(
-              (e) => Card(
+          (e) => Card(
             elevation: 4,
             child: ListTile(
               onTap: () => Navigator.pushNamed(context, '/solicitud_show',
@@ -83,8 +83,8 @@ class _EmpresaHomeState extends State<EmpresaHome> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-      SolicitudBloc(RepositoryProvider.of<SolicitudRepository>(context))
-        ..add(SolicitudListEvent()),
+          SolicitudBloc(RepositoryProvider.of<SolicitudRepository>(context))
+            ..add(SolicitudListEvent()),
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
             child: const Icon(Icons.add),
@@ -104,6 +104,7 @@ class _EmpresaHomeState extends State<EmpresaHome> {
             }
             if (state is SolicitudSuccessListState) {
               agregarData(state.responseData.data);
+              List<String> listaDeOpciones = <String>["A", "B", "C", "D"];
               return listarResponseData();
             }
 

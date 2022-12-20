@@ -8,10 +8,11 @@ class SolicitudListEvent extends SolicitudEvent {
   List<Object?> get props => [];
 }
 
-class SolicitudAddEvent extends SolicitudEvent {
+class SolicitudSaveEvent extends SolicitudEvent {
   final Solicitud solicitud;
+  final int? id;
 
-  SolicitudAddEvent(this.solicitud);
+  SolicitudSaveEvent(this.solicitud, this.id);
 
   @override
   List<Object?> get props => [solicitud];

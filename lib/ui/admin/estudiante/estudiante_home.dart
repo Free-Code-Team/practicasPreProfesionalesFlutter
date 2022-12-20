@@ -6,14 +6,14 @@ import 'package:practicas_pre_profesionales_flutter/models/solicitud/solicitud.d
 import 'package:practicas_pre_profesionales_flutter/repositories/solicitud_repository.dart';
 import 'package:practicas_pre_profesionales_flutter/ui/admin/drawer_admin.dart';
 
-class EmpresaHome extends StatefulWidget {
-  const EmpresaHome({Key? key}) : super(key: key);
+class EstudianteHome extends StatefulWidget {
+  const EstudianteHome({Key? key}) : super(key: key);
 
   @override
-  State<EmpresaHome> createState() => _EmpresaHomeState();
+  State<EstudianteHome> createState() => _EstudianteHomeState();
 }
 
-class _EmpresaHomeState extends State<EmpresaHome> {
+class _EstudianteHomeState extends State<EstudianteHome> {
   List<Solicitud> responseData = [];
   late String _value;
   @override
@@ -89,7 +89,7 @@ class _EmpresaHomeState extends State<EmpresaHome> {
         floatingActionButton: FloatingActionButton(
             child: const Icon(Icons.add),
             onPressed: () {
-              Navigator.pushNamed(context, '/solicitud_add');
+              Navigator.pushNamed(context, '/estudiante_add');
             }),
         appBar: AppBar(
           title: const Text('Solicitudes'),

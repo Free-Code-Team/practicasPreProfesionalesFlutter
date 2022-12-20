@@ -5,25 +5,35 @@ abstract class AuthEvent extends Equatable {
   List<Object> get props => [];
 }
 
-// When the user signing in with email and password this event is called and the [AuthRepository] is called to sign in the user
-class SignInRequested extends AuthEvent {
+class IngresarEvent extends AuthEvent {
   final String email;
   final String password;
 
-  SignInRequested(this.email, this.password);
+  IngresarEvent(this.email, this.password);
 }
 
-// When the user signing up with email and password this event is called and the [AuthRepository] is called to sign up the user
-class SignUpRequested extends AuthEvent {
+class RegistrarEvent extends AuthEvent {
+  final String name;
   final String email;
   final String password;
   final String rol;
+  final String token;
 
-  SignUpRequested(this.email, this.password, this.rol);
+  RegistrarEvent({
+    required this.name,
+    required this.email,
+    required this.password,
+    required this.rol,
+    required this.token,
+  });
 }
 
-// When the user signing in with google this event is called and the [AuthRepository] is called to sign in the user
-class GoogleSignInRequested extends AuthEvent {}
+class AutenticarConGoogleEvent extends AuthEvent {}
 
-// When the user signing out this event is called and the [AuthRepository] is called to sign out the user
-class SignOutRequested extends AuthEvent {}
+class AutenticarEvent extends AuthEvent {
+  final String uid;
+  AutenticarEvent(this.uid);
+}
+
+class DesautenticarEvent extends AuthEvent {}
+

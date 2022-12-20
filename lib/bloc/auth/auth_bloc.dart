@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:practicas_pre_profesionales_flutter/models/usuario.dart';
 import 'package:practicas_pre_profesionales_flutter/repositories/auth_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,53 +9,50 @@ part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final AuthRepository authRepository;
-  AuthBloc({required this.authRepository}) : super(UnAuthenticated()) {
-    // Cuando el usuario presiona el botón de inicio de sesión, enviaremos el evento SignInRequested al AuthBloc para manejarlo y emitir el estado autenticado si el usuario está autenticado.
-    on<SignInRequested>((event, emit) async {
-      emit(Loading());
+  final AuthRepository _authRepository;
+
+  AuthBloc(this._authRepository) : super(DesautenticadoState()) {
+    on<IngresarEvent>((event, emit) async {
+      emit(CargandoState());
       try {
-        await authRepository.signIn(
+        Usuario? data = await _authRepository.signIn(
           email: event.email,
           password: event.password,
         );
-        emit(Authenticated(rol: await authRepository.route()));
+        emit(AutenticadoConExitoState(data!));
       } catch (e) {
-        emit(AuthError(e.toString()));
-        emit(UnAuthenticated());
+        emit(ErrorState(e.toString()));
       }
     });
-    // When User Presses the SignUp Button, we will send the SignUpRequest Event to the AuthBloc to handle it and emit the Authenticated State if the user is authenticated
-    on<SignUpRequested>((event, emit) async {
-      emit(Loading());
+    on<RegistrarEvent>((event, emit) async {
+      emit(CargandoState());
       try {
-        await authRepository.signUp(
+        Usuario? data = await _authRepository.signUp(
           email: event.email,
           password: event.password,
           rol: event.rol,
+          name: event.name
         );
-        emit(Authenticated(rol: event.rol));
+        emit(AutenticadoConExitoState(data!));
       } catch (e) {
-        emit(AuthError(e.toString()));
-        emit(UnAuthenticated());
+        emit(ErrorState(e.toString()));
       }
     });
-    // When User Presses the Google Login Button, we will send the GoogleSignInRequest Event to the AuthBloc to handle it and emit the Authenticated State if the user is authenticated
-    on<GoogleSignInRequested>((event, emit) async {
-      emit(Loading());
+    on<AutenticarConGoogleEvent>((event, emit) async {});
+
+    on<AutenticarEvent>((event, emit) async {
+      emit(CargandoState());
       try {
-        await authRepository.signInWithGoogle();
-        emit(const Authenticated(rol: 'Desconocido'));
+        Usuario? data = await _authRepository.getUser(event.uid);
+        emit(AutenticadoConExitoState(data!));
       } catch (e) {
-        emit(AuthError(e.toString()));
-        emit(UnAuthenticated());
+        emit(ErrorState(e.toString()));
       }
     });
-    // When User Presses the SignOut Button, we will send the SignOutRequested Event to the AuthBloc to handle it and emit the UnAuthenticated State
-    on<SignOutRequested>((event, emit) async {
-      emit(Loading());
-      await authRepository.signOut();
-      emit(UnAuthenticated());
+
+    on<DesautenticarEvent>((event, emit) async {
+      await _authRepository.signOut();
+      emit(DesautenticadoState());
     });
   }
 }

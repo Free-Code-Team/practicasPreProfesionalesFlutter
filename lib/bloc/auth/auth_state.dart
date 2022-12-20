@@ -1,37 +1,33 @@
 part of 'auth_bloc.dart';
 
 @immutable
-abstract class AuthState extends Equatable {
-  const AuthState();
-}
+abstract class AuthState extends Equatable {}
 
-// Cuando el usuario presiona el botón de inicio de sesión o registro, el estado cambia primero a cargando y luego a Autenticado.
-class Loading extends AuthState {
+class CargandoState extends AuthState {
   @override
   List<Object?> get props => [];
 }
 
-// Cuando el usuario se autentica, el estado cambia a Autenticado.
-class Authenticated extends AuthState {
-  final String? rol;
-
-  const Authenticated({required this.rol});
-
+class AutenticadoConExitoState extends AuthState {
+  final Usuario usuario;
+  AutenticadoConExitoState(this.usuario);
   @override
-  List<Object?> get props => [rol];
+  List<Object?> get props => [usuario];
 }
 
-// Este es el estado inicial del bloque. Cuando el usuario no está autenticado, el estado cambia a No autenticado.
-class UnAuthenticated extends AuthState {
+class DesautenticadoConExitoState extends AuthState {
   @override
   List<Object?> get props => [];
 }
 
-// Si ocurre algún error, el estado cambia a AuthError.
-class AuthError extends AuthState {
+class ErrorState extends AuthState {
   final String error;
-
-  const AuthError(this.error);
+  ErrorState(this.error);
   @override
   List<Object?> get props => [error];
+}
+
+class DesautenticadoState extends AuthState {
+  @override
+  List<Object?> get props => [];
 }

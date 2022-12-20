@@ -25,10 +25,15 @@ class SolicitudBloc extends Bloc<SolicitudEvent, SolicitudState> {
       }
     });
 
-    on<SolicitudAddEvent>((event, emit) async {
+    on<SolicitudSaveEvent>((event, emit) async {
       try {
-        final response = await _solicitudRepository.addSolicitud(event.solicitud);
-        emit(SolicitudSuccessAddState(response));
+        if (event.id != null) {
+          final response = await _solicitudRepository.updateSolicitud(event.solicitud);
+          emit(SolicitudSuccessSaveState(response));
+        } else {
+          final response = await _solicitudRepository.addSolicitud(event.solicitud);
+          emit(SolicitudSuccessSaveState(response));
+        }
       } catch (e) {
         emit(SolicitudFailedState(e.toString()));
       }
@@ -37,7 +42,6 @@ class SolicitudBloc extends Bloc<SolicitudEvent, SolicitudState> {
     on<SolicitudShowvent>((event, emit) async {
       try {
         final solicitud = await _solicitudRepository.getSolicitudById(event.id);
-        print(solicitud);
         emit(SolicitudSuccessShowState(solicitud));
       } catch (e) {
         emit(SolicitudFailedState(e.toString()));

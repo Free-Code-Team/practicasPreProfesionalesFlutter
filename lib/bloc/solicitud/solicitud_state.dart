@@ -22,10 +22,10 @@ class SolicitudSuccessListState extends SolicitudState {
   List<Object?> get props => [responseData];
 }
 
-class SolicitudSuccessAddState extends SolicitudState {
+class SolicitudSuccessSaveState extends SolicitudState {
   final bool res;
 
-  SolicitudSuccessAddState(this.res);
+  SolicitudSuccessSaveState(this.res);
 
   @override
   List<Object?> get props => [res];

@@ -1,50 +1,69 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:practicas_pre_profesionales_flutter/models/usuario.dart';
 
 class AuthRepository {
   final _firebaseAuth = FirebaseAuth.instance;
 
-  Future<String> route() async {
-    User? user = _firebaseAuth.currentUser;
-    String rol = '';
+  _postDetailsToFirestore(String email, String rool, String name, String uid) {
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+    CollectionReference ref = firebaseFirestore.collection('usuarios');
+    ref.doc(uid).set({'email': email, 'rol': rool, 'name': name});
+  }
+
+  Future<Usuario?> getUser(String uid) async {
+    Usuario? data;
+
     var kk = await FirebaseFirestore.instance
         .collection('usuarios')
-        .doc(user!.uid)
+        .doc(uid)
         .get()
         .then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
-        if (documentSnapshot.get('rol') == "Estudiante") {
-          rol = 'Estudiante';
-        } else {
-          rol = 'Admin';
-        }
+        data = Usuario(
+          email: documentSnapshot.get('email'),
+          name: documentSnapshot.get('name'),
+          rol: documentSnapshot.get('rol'),
+          uid: uid,
+        );
       } else {
-        rol = 'NA';
+        data = null;
       }
     }).catchError((e) {
-      rol = 'Error';
+      data = null;
     });
-    return rol;
+    return data;
   }
 
-  postDetailsToFirestore(String email, String rool) async {
-    FirebaseFirestore firebaseFirestore =
-        FirebaseFirestore.instance;
-    var user = _firebaseAuth.currentUser;
-    CollectionReference ref = firebaseFirestore.collection('usuarios');
-    ref.doc(user!.uid).set({'email': email, 'rol': rool});
+  Future<List<Usuario>> getUsers() async {
+    List<Usuario> usuarios = [];
+    Usuario usuario;
+    await FirebaseFirestore.instance.collection('usuarios').get().then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        usuario = Usuario(name: doc['name'], email: doc['email'], rol: doc['rol'], uid: doc.id);
+        usuarios.add(usuario);
+      }
+    }
+    ).catchError((e) => print(e));
+    return usuarios;
   }
 
-  Future<void> signUp(
+  Future<Usuario?> signUp(
       {required String email,
       required String password,
-      required String rol}) async {
+      required String rol,
+      required String name}) async {
+    Usuario? data;
     try {
-      await _firebaseAuth
+      await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password)
-          .then((value) => {postDetailsToFirestore(email, rol)})
-          .catchError((e) {});
+          .then((value) async {
+        await _postDetailsToFirestore(email, rol, name, value.user!.uid);
+        data = await getUser(value.user!.uid);
+        print(data!.email);
+      }).catchError((e) {});
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         throw Exception('The password provided is too weak.');
@@ -54,15 +73,20 @@ class AuthRepository {
     } catch (e) {
       throw Exception(e.toString());
     }
+    return data;
   }
 
-  Future<void> signIn({
+  Future<Usuario?> signIn({
     required String email,
     required String password,
   }) async {
+    Usuario? data;
     try {
-      await _firebaseAuth.signInWithEmailAndPassword(
-          email: email, password: password);
+      await _firebaseAuth
+          .signInWithEmailAndPassword(email: email, password: password)
+          .then((value) async {
+        data = await getUser(value.user!.uid);
+      }).catchError((e) {});
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         throw Exception('No user found for that email.');
@@ -70,6 +94,7 @@ class AuthRepository {
         throw Exception('Wrong password provided for that user.');
       }
     }
+    return data;
   }
 
   Future<void> signOut() async {

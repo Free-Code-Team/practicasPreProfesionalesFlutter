@@ -1,6 +1,7 @@
 import 'package:practicas_pre_profesionales_flutter/bloc/auth/auth_bloc.dart';
 import 'package:practicas_pre_profesionales_flutter/ui/admin/dashboard.dart';
-import 'package:practicas_pre_profesionales_flutter/ui/estudiante/estudiante.dart';
+import 'package:practicas_pre_profesionales_flutter/ui/desconocido/desconocido.dart';
+import 'package:practicas_pre_profesionales_flutter/ui/estudiante/estudianteUI.dart';
 import 'package:practicas_pre_profesionales_flutter/ui/auth/sign_in.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
@@ -15,44 +16,51 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   final _formKey = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
+  final _tfEmail = TextEditingController();
+  final _tfName = TextEditingController();
+  final _tfToken = TextEditingController();
+  final _tfPassword = TextEditingController();
+
+  final String tokenValue = 'a1b2c3';
+  final String rolName = 'Estudiante';
 
   @override
   void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
+    _tfEmail.dispose();
+    _tfPassword.dispose();
+    _tfName.dispose();
+    _tfToken.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocConsumer<AuthBloc, AuthState>(
+      body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
-          if (state is Authenticated) {
-            // Navigating to the dashboard screen if the user is authenticated
-            if (state.rol == 'Estudiante') {
+          if (state is AutenticadoConExitoState) {
+            if (state.usuario.rol == 'Estudiante') {
               Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => const Estudiante()));
-            } else if (state.rol == 'Admin'){
+                  MaterialPageRoute(builder: (context) => const EstudianteUI()));
+            } else if (state.usuario.rol == 'Admin') {
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) => const Dashboard()));
+            } else {
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => const Desconocido()));
             }
           }
-          if (state is AuthError) {
-            // Displaying the error message if the user is not authenticated
+          if (state is ErrorState) {
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text(state.error)));
           }
         },
+        child: BlocBuilder<AuthBloc, AuthState> (
         builder: (context, state) {
-          if (state is Loading) {
-            // Displaying the loading indicator while the user is signing up
+          if (state is CargandoState) {
             return const Center(child: CircularProgressIndicator());
           }
-          if (state is UnAuthenticated) {
-            // Displaying the sign up form if the user is not authenticated
+          if (state is DesautenticadoState) {
             return Center(
               child: Padding(
                 padding: const EdgeInsets.all(18.0),
@@ -64,9 +72,9 @@ class _SignUpState extends State<SignUp> {
                       const Text(
                         "Registrarse",
                         style: TextStyle(
-                          fontSize: 38,
-                          fontWeight: FontWeight.bold,
-                        ),
+                            fontSize: 38,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black54),
                       ),
                       const SizedBox(
                         height: 18,
@@ -77,76 +85,169 @@ class _SignUpState extends State<SignUp> {
                           child: Column(
                             children: [
                               TextFormField(
-                                controller: _emailController,
+                                keyboardType: TextInputType.text,
+                                controller: _tfToken,
                                 decoration: const InputDecoration(
-                                  hintText: "Email",
-                                  border: OutlineInputBorder(),
+                                  hintText: "Token",
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20))),
+                                ),
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                validator: (value) {
+                                  return value != null && value != tokenValue
+                                      ? 'Ingrese un usuario válido'
+                                      : null;
+                                },
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              TextFormField(
+                                keyboardType: TextInputType.name,
+                                controller: _tfName,
+                                decoration: const InputDecoration(
+                                  hintText: "Usuario",
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20))),
+                                ),
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                validator: (value) {
+                                  return value != null && value.length < 5
+                                      ? 'Ingrese un usuario válido'
+                                      : null;
+                                },
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              TextFormField(
+                                keyboardType: TextInputType.emailAddress,
+                                controller: _tfEmail,
+                                decoration: const InputDecoration(
+                                  hintText: "Correo",
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20))),
                                 ),
                                 autovalidateMode:
                                     AutovalidateMode.onUserInteraction,
                                 validator: (value) {
                                   return value != null &&
                                           !EmailValidator.validate(value)
-                                      ? 'Enter a valid email'
+                                      ? 'Ingrese un email válido'
                                       : null;
                                 },
                               ),
                               const SizedBox(
-                                height: 10,
+                                height: 20,
                               ),
                               TextFormField(
-                                controller: _passwordController,
+                                keyboardType: TextInputType.visiblePassword,
+                                controller: _tfPassword,
                                 obscureText: true,
                                 decoration: const InputDecoration(
-                                  hintText: "Password",
-                                  border: OutlineInputBorder(),
+                                  hintText: "Contraseña",
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20))),
                                 ),
                                 autovalidateMode:
                                     AutovalidateMode.onUserInteraction,
                                 validator: (value) {
                                   return value != null && value.length < 6
-                                      ? "Enter min. 6 characters"
+                                      ? 'Ingrese una contraseña válida'
                                       : null;
                                 },
                               ),
                               const SizedBox(
-                                height: 12,
+                                height: 20,
                               ),
                               SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.7,
+                                width: double.infinity,
                                 child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 1,
+                                    minimumSize: const Size(0, 50),
+                                    shape: const StadiumBorder(),
+                                  ),
                                   onPressed: () {
                                     _createAccountWithEmailAndPassword(context);
                                   },
-                                  child: const Text('Sign Up'),
+                                  child: const Text('Registrar',
+                                      style: TextStyle(fontSize: 15)),
                                 ),
-                              )
+                              ),
                             ],
                           ),
                         ),
                       ),
-                      const Text("Already have an account?"),
-                      OutlinedButton(
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const SignIn()),
-                          );
-                        },
-                        child: const Text("Sign In"),
+                      const SizedBox(
+                        height: 20,
                       ),
-                      const Text("Or"),
-                      IconButton(
-                        onPressed: () {
-                          _authenticateWithGoogle(context);
-                        },
-                        icon: Image.network(
-                          "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png",
-                          height: 30,
-                          width: 30,
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Column(
+                            children: [
+                              const Text("¿Ya tienes una cuenta?"),
+                              Column(
+                                children: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const SignIn()),
+                                      );
+                                    },
+                                    child: const Text("Ingresar"),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              const Text(
+                                "Ingrese como invitado (Google o Facebook)",
+                                style: TextStyle(
+                                  color: Colors.black45,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              _authenticateWithGoogle(context);
+                            },
+                            icon: Image.asset(
+                              'assets/icons/google300.png',
+                              width: 100,
+                              height: 100,
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              _authenticateWithGoogle(context);
+                            },
+                            icon: Image.asset(
+                              'assets/icons/facebook300.png',
+                            ),
+                          )
+                        ],
+                      )
                     ],
                   ),
                 ),
@@ -154,7 +255,7 @@ class _SignUpState extends State<SignUp> {
             );
           }
           return Container();
-        },
+        }),
       ),
     );
   }
@@ -162,15 +263,19 @@ class _SignUpState extends State<SignUp> {
   void _createAccountWithEmailAndPassword(BuildContext context) {
     if (_formKey.currentState!.validate()) {
       BlocProvider.of<AuthBloc>(context).add(
-        SignUpRequested(
-            _emailController.text, _passwordController.text, 'Estudiante'),
+        RegistrarEvent(
+            email: _tfEmail.text,
+            name: _tfName.text,
+            password: _tfPassword.text,
+            rol: rolName,
+            token: _tfToken.text),
       );
     }
   }
 
   void _authenticateWithGoogle(context) {
     BlocProvider.of<AuthBloc>(context).add(
-      GoogleSignInRequested(),
+      AutenticarConGoogleEvent(),
     );
   }
 }
