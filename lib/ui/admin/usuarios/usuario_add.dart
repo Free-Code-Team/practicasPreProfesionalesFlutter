@@ -9,6 +9,7 @@ import 'package:practicas_pre_profesionales_flutter/models/persona/persona.dart'
 import 'package:practicas_pre_profesionales_flutter/repositories/auth_repository.dart';
 import 'package:practicas_pre_profesionales_flutter/repositories/estudiante_repository.dart';
 import 'package:practicas_pre_profesionales_flutter/repositories/persona_repository.dart';
+import 'package:practicas_pre_profesionales_flutter/ui/admin/usuarios/usuario_home.dart';
 
 import '../../../models/solicitud/solicitud.dart';
 
@@ -30,13 +31,8 @@ class _UsuarioAddState extends State<UsuarioAdd> {
   var tfDni = TextEditingController();
   var tfTelefono = TextEditingController();
   var tfDireccion = TextEditingController();
-  String genero = 'n';
-
-  //estudiante
-  var tfCodigo = TextEditingController();
-  // Initial Selected Value
-  String semestre = 'Ingrese su semestre';
-
+  var genero = 'n';
+  var semestre = 'Ingrese su semestre';
   // List of items in our dropdown menu
   var items = ['Ingrese su semestre', '6', '7', '8', '9', '10'];
 
@@ -45,6 +41,9 @@ class _UsuarioAddState extends State<UsuarioAdd> {
     '1',
     '0',
   ];
+  //estudiante
+  var tfCodigo = TextEditingController();
+  // Initial Selected Value
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +53,8 @@ class _UsuarioAddState extends State<UsuarioAdd> {
           create: (context) => EstudianteBloc(
               RepositoryProvider.of<EstudianteRepository>(context,
                   listen: false),
-              RepositoryProvider.of<PersonaRepository>(context, listen: false))..add(ObtenerPersonaPorUid(widget.uid)),
+              RepositoryProvider.of<PersonaRepository>(context, listen: false))
+            ..add(ObtenerPersonaPorUid(widget.uid)),
         ),
         BlocProvider(
           create: (context) => UsuarioBloc(
@@ -70,33 +70,45 @@ class _UsuarioAddState extends State<UsuarioAdd> {
           builder: (context, state) {
             return FloatingActionButton(
               backgroundColor: Colors.red,
-              child: const Icon(Icons.add),
-              onPressed: () {
-                Persona persona = Persona(
-                    nombres: tfNombres.text,
-                    apellidos: tfApellidos.text,
-                    dni: tfDni.text,
-                    direccion: tfDireccion.text,
-                    telefono: tfTelefono.text,
-                    sexo: genero);
-                Estudiante estudiante = Estudiante(
-                  codigo: tfCodigo.text,
-                  semestre: semestre,
-                );
-
+              child: const Icon(Icons.save),
+              onPressed: () async {
                 if (state is PersonaEncontradaState) {
                   if (_formKey.currentState!.validate()) {
+                    Persona persona = Persona(
+                        id: state.persona!.id,
+                        nombres: tfNombres.text,
+                        apellidos: tfApellidos.text,
+                        dni: tfDni.text,
+                        direccion: tfDireccion.text,
+                        telefono: tfTelefono.text,
+                        sexo: genero);
+                    Estudiante estudiante = Estudiante(
+                        id: state.estudiante!.id,
+                        codigo: tfCodigo.text,
+                        semestre: semestre);
                     BlocProvider.of<EstudianteBloc>(context).add(
-                        EstudianteSaveEvent(
-                            estudiante, persona, widget.uid, state.persona!.id));
-                    Navigator.pushNamed(context, '/usuario_home');
+                        EstudianteSaveEvent(estudiante, persona, widget.uid,
+                            state.persona!.id));
+                    Navigator.of(context)
+                        .pushNamedAndRemoveUntil('/usuario_home', (Route<dynamic> route) => false);
                   }
                 }
                 if (state is PersonaNoEncotradaState) {
+                  Persona persona = Persona(
+                      nombres: tfNombres.text,
+                      apellidos: tfApellidos.text,
+                      dni: tfDni.text,
+                      direccion: tfDireccion.text,
+                      telefono: tfTelefono.text,
+                      sexo: genero);
+                  Estudiante estudiante = Estudiante(
+                    codigo: tfCodigo.text,
+                    semestre: semestre,
+                  );
                   BlocProvider.of<EstudianteBloc>(context).add(
                       EstudianteSaveEvent(
                           estudiante, persona, widget.uid, null));
-                  Navigator.pushNamed(context, '/usuario_home');
+                  Navigator.pop(context);
                 }
               },
             );
@@ -127,19 +139,20 @@ class _UsuarioAddState extends State<UsuarioAdd> {
             if (state is PersonaEncontradaState) {
               //persona
               tfNombres = TextEditingController(text: state.persona!.nombres);
-              tfApellidos = TextEditingController(text: state.persona!.apellidos);
+              tfApellidos =
+                  TextEditingController(text: state.persona!.apellidos);
               tfDni = TextEditingController(text: state.persona!.dni);
               tfTelefono = TextEditingController(text: state.persona!.telefono);
-              tfDireccion = TextEditingController(text: state.persona!.direccion);
+              tfDireccion =
+                  TextEditingController(text: state.persona!.direccion);
               genero = state.persona!.sexo;
 
+              print(genero);
               //estudiante
               tfCodigo = TextEditingController(text: state.estudiante!.codigo);
               semestre = state.estudiante!.semestre;
             }
-            if (state is PersonaNoEncotradaState) {
-
-            }
+            if (state is PersonaNoEncotradaState) {}
             return ListView(children: [
               Padding(
                 padding: const EdgeInsets.all(20.0),
@@ -228,9 +241,7 @@ class _UsuarioAddState extends State<UsuarioAdd> {
                           );
                         }).toList(),
                         onChanged: (String? newSemestre) {
-                          setState(() {
-                            semestre = newSemestre!;
-                          });
+                          semestre = newSemestre!;
                         },
                       ),
                       DropdownButtonFormField(
@@ -242,7 +253,7 @@ class _UsuarioAddState extends State<UsuarioAdd> {
                         isDense: false,
                         value: genero,
                         validator: (value) =>
-                        value == 'n' ? "Ingrese su genero" : null,
+                            value == 'n' ? "Ingrese su genero" : null,
                         alignment: Alignment.topRight,
                         icon: const Icon(Icons.keyboard_arrow_down),
                         items: items2.map((String items) {
@@ -251,14 +262,12 @@ class _UsuarioAddState extends State<UsuarioAdd> {
                             child: Text(items == 'n'
                                 ? 'Ingrese su género'
                                 : items == '1'
-                                ? 'Masculino'
-                                : 'Femenino'),
+                                    ? 'Masculino'
+                                    : 'Femenino'),
                           );
                         }).toList(),
                         onChanged: (String? newGenero) {
-                          setState(() {
-                            genero = newGenero!;
-                          });
+                          genero = newGenero!;
                         },
                       ),
                     ],

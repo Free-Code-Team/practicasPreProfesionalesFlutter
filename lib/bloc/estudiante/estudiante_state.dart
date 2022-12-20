@@ -75,3 +75,12 @@ class PersonaNoEncotradaState extends EstudianteState {
   @override
   List<Object?> get props => [];
 }
+
+class MostrarEstadoState extends EstudianteState {
+  final String estado;
+
+  MostrarEstadoState(this.estado);
+
+  @override
+  List<Object?> get props => [estado];
+}

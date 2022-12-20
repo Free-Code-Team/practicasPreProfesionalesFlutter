@@ -17,6 +17,7 @@ class UsuarioBloc extends Bloc<UsuarioEvent, UsuarioState> {
     on<ListarUsuariosEvent>((event, emit) async {
       emit(CargandoUsuariosState());
       List<Usuario> usuarios = await _authRepository.getUsers();
+      print(usuarios);
       emit(ListadoDeUsuariosState(usuarios));
     });
   }

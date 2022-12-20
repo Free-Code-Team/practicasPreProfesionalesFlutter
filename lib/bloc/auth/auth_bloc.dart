@@ -19,9 +19,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           email: event.email,
           password: event.password,
         );
-        emit(AutenticadoConExitoState(data!));
+        if (data == null) {
+          emit(ErrorState('Error no se pudo ingresar al sistema'));
+          emit(DesautenticadoState());
+        } else {
+          emit(AutenticadoConExitoState(data));
+        }
       } catch (e) {
         emit(ErrorState(e.toString()));
+        emit(DesautenticadoState());
       }
     });
     on<RegistrarEvent>((event, emit) async {
@@ -31,6 +37,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           email: event.email,
           password: event.password,
           rol: event.rol,
+          estado: event.estado,
           name: event.name
         );
         emit(AutenticadoConExitoState(data!));
@@ -53,6 +60,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<DesautenticarEvent>((event, emit) async {
       await _authRepository.signOut();
       emit(DesautenticadoState());
+    });
+
+    on<AutenticarConGoogle>((event, emit) async {
+      try {
+        Usuario usuario = Usuario(uid: '1111', name: 'saul', email: 'saul', estado: 'aaa', rol: 'Desconocido');
+        await _authRepository.signInWithGoogle();
+        emit(AutenticadoConExitoState(usuario));
+      } catch (e) {
+        emit(ErrorState(e.toString()));
+      }
     });
   }
 }

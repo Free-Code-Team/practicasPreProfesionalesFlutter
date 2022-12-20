@@ -7,10 +7,10 @@ import 'package:practicas_pre_profesionales_flutter/models/usuario.dart';
 class AuthRepository {
   final _firebaseAuth = FirebaseAuth.instance;
 
-  _postDetailsToFirestore(String email, String rool, String name, String uid) {
+  _postDetailsToFirestore(String email, String rool, String name, String uid, String estado) {
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     CollectionReference ref = firebaseFirestore.collection('usuarios');
-    ref.doc(uid).set({'email': email, 'rol': rool, 'name': name});
+    ref.doc(uid).set({'email': email, 'rol': rool, 'name': name, 'estado': estado});
   }
 
   Future<Usuario?> getUser(String uid) async {
@@ -26,6 +26,7 @@ class AuthRepository {
           email: documentSnapshot.get('email'),
           name: documentSnapshot.get('name'),
           rol: documentSnapshot.get('rol'),
+          estado: documentSnapshot.get('estado'),
           uid: uid,
         );
       } else {
@@ -42,7 +43,7 @@ class AuthRepository {
     Usuario usuario;
     await FirebaseFirestore.instance.collection('usuarios').get().then((QuerySnapshot querySnapshot) {
       for (var doc in querySnapshot.docs) {
-        usuario = Usuario(name: doc['name'], email: doc['email'], rol: doc['rol'], uid: doc.id);
+        usuario = Usuario(name: doc['name'], email: doc['email'], rol: doc['rol'], estado: doc['estado'], uid: doc.id);
         usuarios.add(usuario);
       }
     }
@@ -53,14 +54,14 @@ class AuthRepository {
   Future<Usuario?> signUp(
       {required String email,
       required String password,
-      required String rol,
+      required String rol, required String estado,
       required String name}) async {
     Usuario? data;
     try {
       await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password)
           .then((value) async {
-        await _postDetailsToFirestore(email, rol, name, value.user!.uid);
+        await _postDetailsToFirestore(email, rol, name, value.user!.uid, estado);
         data = await getUser(value.user!.uid);
         print(data!.email);
       }).catchError((e) {});

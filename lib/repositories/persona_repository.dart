@@ -30,18 +30,17 @@ class PersonaRepository {
         persona.toJson(),
       ),
     );
-    print(response.body);
     var personaT = Persona.fromJson(json.decode(response.body));
-    print(personaT);
     return personaT;
   }
 
-  /*Future<bool> updatePersona(Persona persona) async {
+  Future<Persona> actualizarPersona(Persona persona) async {
     var response = await http.put(
-      Uri.parse("$_baseUrl/solicitudes/${persona.id}"),
+      Uri.parse("$_baseUrl/personas/${persona.id}"),
       headers: {"Content-Type": "application/json"},
       body: json.encode(persona.toJson()),
     );
-    return response.statusCode == 200;
-  }*/
+    var personaT = Persona.fromJson(json.decode(response.body));
+    return personaT;
+  }
 }

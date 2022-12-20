@@ -32,3 +32,13 @@ class ObtenerPersonaPorUid extends EstudianteEvent {
   @override
   List<Object?> get props => [uid];
 }
+
+class ObtenerEstadoEvent extends EstudianteEvent {
+  final String uid;
+  final String estado;
+
+  ObtenerEstadoEvent(this.uid, this.estado);
+
+  @override
+  List<Object?> get props => [uid, estado];
+}

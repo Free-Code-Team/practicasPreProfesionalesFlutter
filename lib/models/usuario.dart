@@ -3,6 +3,7 @@ class Usuario {
   String name;
   String email;
   String? password;
+  String estado;
   String rol;
 
   Usuario({
@@ -10,6 +11,7 @@ class Usuario {
     required this.name,
     required this.email,
     this.password,
+    required this.estado,
     required this.rol,
   });
 
@@ -18,11 +20,13 @@ class Usuario {
           String? name,
           String? email,
           String? password,
+          String? estado,
           String? rol}) =>
       Usuario(
           uid: uid ?? this.uid,
           name: name ?? this.name,
           email: email ?? this.email,
           password: password ?? this.password,
+          estado: estado ?? this.estado,
           rol: rol ?? this.rol);
 }

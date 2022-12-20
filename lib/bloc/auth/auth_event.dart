@@ -17,12 +17,14 @@ class RegistrarEvent extends AuthEvent {
   final String email;
   final String password;
   final String rol;
+  final String estado;
   final String token;
 
   RegistrarEvent({
     required this.name,
     required this.email,
     required this.password,
+    required this.estado,
     required this.rol,
     required this.token,
   });
@@ -37,3 +39,5 @@ class AutenticarEvent extends AuthEvent {
 
 class DesautenticarEvent extends AuthEvent {}
 
+
+class AutenticarConGoogle extends AuthEvent {}

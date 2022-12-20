@@ -268,6 +268,7 @@ class _SignUpState extends State<SignUp> {
             name: _tfName.text,
             password: _tfPassword.text,
             rol: rolName,
+            estado: '0',
             token: _tfToken.text),
       );
     }
