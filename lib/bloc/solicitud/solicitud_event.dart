@@ -26,3 +26,13 @@ class SolicitudShowvent extends SolicitudEvent {
   @override
   List<Object?> get props => [id];
 }
+
+class TraerEstudianteYEmpresaEvent extends SolicitudEvent {
+  final int? idEmpresa;
+  final int? idEstudiante;
+
+  TraerEstudianteYEmpresaEvent(this.idEmpresa, this.idEstudiante);
+
+  @override
+  List<Object?> get props => [idEmpresa, idEstudiante];
+}

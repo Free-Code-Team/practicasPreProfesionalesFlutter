@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:practicas_pre_profesionales_flutter/bloc/solicitud/solicitud_bloc.dart';
 import 'package:practicas_pre_profesionales_flutter/models/solicitud/solicitud.dart';
+import 'package:practicas_pre_profesionales_flutter/repositories/empresa_repository.dart';
+import 'package:practicas_pre_profesionales_flutter/repositories/estudiante_repository.dart';
+import 'package:practicas_pre_profesionales_flutter/repositories/persona_repository.dart';
 import 'package:practicas_pre_profesionales_flutter/repositories/solicitud_repository.dart';
 import 'package:practicas_pre_profesionales_flutter/ui/admin/drawer_admin.dart';
 
@@ -45,7 +48,7 @@ class _EstudianteHomeState extends State<EstudianteHome> {
     return ListView(
       children: <Widget>[
         ...responseData.map(
-              (e) => Card(
+          (e) => Card(
             elevation: 4,
             child: ListTile(
               onTap: () => Navigator.pushNamed(context, '/solicitud_show',
@@ -82,8 +85,12 @@ class _EstudianteHomeState extends State<EstudianteHome> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-      SolicitudBloc(RepositoryProvider.of<SolicitudRepository>(context))
+      create: (context) => SolicitudBloc(
+          RepositoryProvider.of<SolicitudRepository>(context, listen: false),
+          RepositoryProvider.of<EmpresaRepository>(context, listen: false),
+          RepositoryProvider.of<EstudianteRepository>(context, listen: false),
+          RepositoryProvider.of<PersonaRepository>(context, listen: false)
+      )
         ..add(SolicitudListEvent()),
       child: Scaffold(
         floatingActionButton: FloatingActionButton(

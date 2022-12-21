@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:practicas_pre_profesionales_flutter/models/estudiante/estudiante.dart';
 import 'package:practicas_pre_profesionales_flutter/models/solicitud/response.dart';
 import 'package:practicas_pre_profesionales_flutter/models/solicitud/solicitud.dart';
+import 'package:practicas_pre_profesionales_flutter/repositories/estudiante_repository.dart';
 
 class SolicitudRepository {
   static const String _baseUrl = "http://10.0.2.2:8000/api";
@@ -22,6 +24,13 @@ class SolicitudRepository {
     return jsonSolicitud;
   }
 
+  Future<Solicitud> getPersonaBySolicitud(int id) async {
+    var response = await http.get(Uri.parse("$_baseUrl/solicitudes/$id"));
+    var jsonSolicitud = Solicitud.fromJson(json.decode(response.body));
+    return jsonSolicitud;
+  }
+
+
   Future<bool> addSolicitud(Solicitud solicitud) async {
     var response = await http.post(
       Uri.parse("$_baseUrl/solicitudes"),
@@ -30,6 +39,7 @@ class SolicitudRepository {
         solicitud.toJson(),
       ),
     );
+    print(response.statusCode);
     return response.statusCode == 200;
   }
 
@@ -41,6 +51,7 @@ class SolicitudRepository {
     );
     return response.statusCode == 200;
   }
+
 
   /*Future<bool> deleteUser(String id) async {
     var response = await http.delete("$baseUrl/users/$id?$apiKey");

@@ -7,6 +7,7 @@ import 'package:practicas_pre_profesionales_flutter/bloc/usuario/usuario_bloc.da
 import 'package:practicas_pre_profesionales_flutter/models/estudiante/estudiante.dart';
 import 'package:practicas_pre_profesionales_flutter/models/usuario.dart';
 import 'package:practicas_pre_profesionales_flutter/repositories/auth_repository.dart';
+import 'package:practicas_pre_profesionales_flutter/repositories/empresa_repository.dart';
 import 'package:practicas_pre_profesionales_flutter/repositories/estudiante_repository.dart';
 import 'package:practicas_pre_profesionales_flutter/repositories/persona_repository.dart';
 import 'package:practicas_pre_profesionales_flutter/repositories/solicitud_repository.dart';
@@ -149,9 +150,14 @@ class _UsuarioHomeState extends State<UsuarioHome> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) =>
-              SolicitudBloc(RepositoryProvider.of<SolicitudRepository>(context))
-                ..add(SolicitudListEvent()),
+          create: (context) => SolicitudBloc(
+              RepositoryProvider.of<SolicitudRepository>(context,
+                  listen: false),
+              RepositoryProvider.of<EmpresaRepository>(context, listen: false),
+              RepositoryProvider.of<EstudianteRepository>(context,
+                  listen: false),
+              RepositoryProvider.of<PersonaRepository>(context, listen: false))
+            ..add(SolicitudListEvent()),
         ),
         BlocProvider(
           create: (context) =>
@@ -165,7 +171,7 @@ class _UsuarioHomeState extends State<UsuarioHome> {
             // Navigate to the sign in screen when the user Signs Out
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (context) => const SignIn()),
-                  (route) => false,
+              (route) => false,
             );
           }
         },

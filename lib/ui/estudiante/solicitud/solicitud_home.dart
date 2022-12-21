@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:practicas_pre_profesionales_flutter/bloc/solicitud/solicitud_bloc.dart';
 import 'package:practicas_pre_profesionales_flutter/models/solicitud/solicitud.dart';
+import 'package:practicas_pre_profesionales_flutter/repositories/empresa_repository.dart';
+import 'package:practicas_pre_profesionales_flutter/repositories/estudiante_repository.dart';
+import 'package:practicas_pre_profesionales_flutter/repositories/persona_repository.dart';
 import 'package:practicas_pre_profesionales_flutter/repositories/solicitud_repository.dart';
 import 'package:practicas_pre_profesionales_flutter/ui/admin/drawer_admin.dart';
 
@@ -9,7 +12,8 @@ class SolicitudHomeEstudiante extends StatefulWidget {
   const SolicitudHomeEstudiante({Key? key}) : super(key: key);
 
   @override
-  State<SolicitudHomeEstudiante> createState() => _SolicitudHomeEstudianteState();
+  State<SolicitudHomeEstudiante> createState() =>
+      _SolicitudHomeEstudianteState();
 }
 
 class _SolicitudHomeEstudianteState extends State<SolicitudHomeEstudiante> {
@@ -82,9 +86,12 @@ class _SolicitudHomeEstudianteState extends State<SolicitudHomeEstudiante> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          SolicitudBloc(RepositoryProvider.of<SolicitudRepository>(context))
-            ..add(SolicitudListEvent()),
+      create: (context) => SolicitudBloc(
+          RepositoryProvider.of<SolicitudRepository>(context, listen: false),
+          RepositoryProvider.of<EmpresaRepository>(context, listen: false),
+          RepositoryProvider.of<EstudianteRepository>(context, listen: false),
+          RepositoryProvider.of<PersonaRepository>(context, listen: false))
+        ..add(SolicitudListEvent()),
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
             child: const Icon(Icons.add),

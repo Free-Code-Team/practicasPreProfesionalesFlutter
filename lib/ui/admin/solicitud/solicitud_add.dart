@@ -3,6 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:practicas_pre_profesionales_flutter/bloc/auth/auth_bloc.dart';
 import 'package:practicas_pre_profesionales_flutter/bloc/empresa/empresa_bloc.dart';
 import 'package:practicas_pre_profesionales_flutter/bloc/solicitud/solicitud_bloc.dart';
+import 'package:practicas_pre_profesionales_flutter/repositories/empresa_repository.dart';
+import 'package:practicas_pre_profesionales_flutter/repositories/estudiante_repository.dart';
+import 'package:practicas_pre_profesionales_flutter/repositories/persona_repository.dart';
 import 'package:practicas_pre_profesionales_flutter/repositories/solicitud_repository.dart';
 
 import '../../../models/solicitud/solicitud.dart';
@@ -26,7 +29,11 @@ class _SolicitudAddState extends State<SolicitudAdd> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => SolicitudBloc(
-          RepositoryProvider.of<SolicitudRepository>(context, listen: false)),
+          RepositoryProvider.of<SolicitudRepository>(context, listen: false),
+          RepositoryProvider.of<EmpresaRepository>(context, listen: false),
+          RepositoryProvider.of<EstudianteRepository>(context, listen: false),
+          RepositoryProvider.of<PersonaRepository>(context, listen: false)
+      ),
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Registrar empresa'),
@@ -98,4 +105,3 @@ class _SolicitudAddState extends State<SolicitudAdd> {
     );
   }
 }
-

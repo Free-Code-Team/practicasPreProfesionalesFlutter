@@ -48,3 +48,14 @@ class SolicitudFailedState extends SolicitudState {
   @override
   List<Object?> get props => [error];
 }
+
+class EmpresaYEstudianteListadoCorrecto extends SolicitudState {
+  final Estudiante estudiante;
+  final Empresa empresa;
+  final Persona persona;
+
+  EmpresaYEstudianteListadoCorrecto(this.estudiante, this.empresa, this.persona);
+
+  @override
+  List<Object?> get props => [estudiante, empresa, persona];
+}
