@@ -21,8 +21,8 @@ class _SolicitudAddState extends State<SolicitudAdd> {
   final _formKey = GlobalKey<FormState>();
   final tfRepresentante = TextEditingController();
   final tfEstado = TextEditingController(text: '2');
-  final tfIdEstudiante = TextEditingController(text: '4');
-  final tfIdEmpresa = TextEditingController(text: '3');
+  final tfIdEstudiante = TextEditingController(text: '');
+  final tfIdEmpresa = TextEditingController(text: '');
   String? gender;
 
   @override
@@ -92,6 +92,22 @@ class _SolicitudAddState extends State<SolicitudAdd> {
                           icon: Icon(Icons.person),
                           hintText: 'Ingrese al representante',
                           labelText: 'Representante',
+                        ),
+                      ),
+                      TextFormField(
+                        controller: tfIdEstudiante,
+                        decoration: const InputDecoration(
+                          icon: Icon(Icons.person),
+                          hintText: 'Ingrese al estudiante (ID)',
+                          labelText: 'Estudiante',
+                        ),
+                      ),
+                      TextFormField(
+                        controller: tfIdEmpresa,
+                        decoration: const InputDecoration(
+                          icon: Icon(Icons.person),
+                          hintText: 'Ingrese la empresa (ID)',
+                          labelText: 'Empresa',
                         ),
                       ),
                     ],

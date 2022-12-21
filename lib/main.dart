@@ -5,7 +5,8 @@ import 'package:practicas_pre_profesionales_flutter/repositories/empresa_reposit
 import 'package:practicas_pre_profesionales_flutter/repositories/estudiante_repository.dart';
 import 'package:practicas_pre_profesionales_flutter/repositories/persona_repository.dart';
 import 'package:practicas_pre_profesionales_flutter/repositories/solicitud_repository.dart';
-import 'package:practicas_pre_profesionales_flutter/test/screens/principales/viewPdf.dart';
+import 'package:practicas_pre_profesionales_flutter/test/screens/principales/documentos.dart';
+import 'package:practicas_pre_profesionales_flutter/UI/admin/practicas/viewPdf.dart';
 import 'package:practicas_pre_profesionales_flutter/ui/admin/dashboard.dart';
 import 'package:practicas_pre_profesionales_flutter/ui/admin/empresas/empresa_add.dart';
 import 'package:practicas_pre_profesionales_flutter/ui/admin/empresas/empresa_home.dart';
@@ -22,7 +23,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:practicas_pre_profesionales_flutter/ui/estudiante/estudianteUI.dart';
-import 'package:practicas_pre_profesionales_flutter/ui/estudiante/solicitud/solicitud_home.dart';
+import 'package:practicas_pre_profesionales_flutter/ui/estudiante/practica/practica_home_estudiante.dart';
+import 'package:practicas_pre_profesionales_flutter/ui/estudiante/solicitud/solicitud_home_estudiante.dart';
 import 'package:practicas_pre_profesionales_flutter/ui/test/test_content.dart';
 
 Future<void> main() async {
@@ -76,7 +78,8 @@ class MyApp extends StatelessWidget {
             '/empresa_home': (context) => const EmpresaHome(),
             '/empresa_add': (context) => const EmpresaAdd(),
             '/hogar_estudiante': (context) => const EstudianteUI(),
-            '/mis_practicas_home': (context) => const EstudianteUI(),
+            '/documentos': (context) => const DocumentsCopyPage(),
+            '/mis_practicas_home': (context) => const PracticaHomeEstudiante(),
             '/mis_solicitudes_home': (context) => const SolicitudHomeEstudiante(),
             '/test': (context) => TestContent(),
           },

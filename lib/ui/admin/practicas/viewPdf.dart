@@ -8,6 +8,7 @@ import 'package:practicas_pre_profesionales_flutter/test/comp/customAppBar.dart'
 import 'package:practicas_pre_profesionales_flutter/ui/admin/drawer_admin.dart';
 import 'package:practicas_pre_profesionales_flutter/ui/admin/practicas/pdf_viewer_page.dart';
 import 'package:practicas_pre_profesionales_flutter/test/widget/button_widget.dart';
+import 'package:http/http.dart' as http;
 
 class ViewPdf extends StatefulWidget {
   const ViewPdf({Key? key}) : super(key: key);
@@ -78,7 +79,7 @@ class _ViewPdfState extends State<ViewPdf> {
                                   text: 'Abrir',
                                   icon: Icons.open_in_new,
                                   onClicked: () async {
-                                    final url = 'GANTT.docx';
+                                    final url = 'files/carta de presentacion.pdf';
                                     final file = await PDFApi.loadFirebase(url);
 
                                     if (file == null) return;
@@ -134,7 +135,7 @@ class _ViewPdfState extends State<ViewPdf> {
                                   icon: Icons.open_in_new,
                                   onClicked: () async {
                                     final url =
-                                        'GANTT.docx';
+                                        'files/carta de aceptación municipio.pdf';
                                     final file = await PDFApi.loadFirebase(url);
 
                                     if (file == null) return;
@@ -194,7 +195,7 @@ class _ViewPdfState extends State<ViewPdf> {
                                   text: 'Abrir',
                                   icon: Icons.open_in_new,
                                   onClicked: () async {
-                                    final url = 'files/MANEJO FINANCIERO.pdf';
+                                    final url = 'files/CONVENIO_DE_PPP.pdf';
                                     final file = await PDFApi.loadFirebase(url);
 
                                     if (file == null) return;
@@ -249,7 +250,7 @@ class _ViewPdfState extends State<ViewPdf> {
                                   text: 'Abrir',
                                   icon: Icons.open_in_new,
                                   onClicked: () async {
-                                    final url = 'files/PAREJA.pdf';
+                                    final url = 'files/_plan de practicas_MUNI_C.pdf';
                                     final file = await PDFApi.loadFirebase(url);
 
                                     if (file == null) return;
@@ -309,7 +310,7 @@ class _ViewPdfState extends State<ViewPdf> {
                                   text: 'Abrir',
                                   icon: Icons.open_in_new,
                                   onClicked: () async {
-                                    final url = 'files/Unidad IV.pdf';
+                                    final url = 'files/ficha evaluacion.pdf';
                                     final file = await PDFApi.loadFirebase(url);
 
                                     if (file == null) return;

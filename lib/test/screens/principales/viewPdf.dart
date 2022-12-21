@@ -56,7 +56,7 @@ class _ViewPdfState extends State<ViewPdf> {
                               text: 'Abrir',
                               icon: Icons.open_in_new,
                               onClicked: () async {
-                                final url = 'files/SOLICITUD.pdf';
+                                final url = 'files/_plan de practicas_MUNI_C.pdf';
                                 final file = await PDFApi.loadFirebase(url);
 
                                 if (file == null) return;

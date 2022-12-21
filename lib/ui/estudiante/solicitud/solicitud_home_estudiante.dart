@@ -9,15 +9,16 @@ import 'package:practicas_pre_profesionales_flutter/repositories/estudiante_repo
 import 'package:practicas_pre_profesionales_flutter/repositories/persona_repository.dart';
 import 'package:practicas_pre_profesionales_flutter/repositories/solicitud_repository.dart';
 import 'package:practicas_pre_profesionales_flutter/ui/admin/drawer_admin.dart';
+import 'package:practicas_pre_profesionales_flutter/ui/estudiante/drawer_estudiante.dart';
 
-class SolicitudHome extends StatefulWidget {
-  const SolicitudHome({Key? key}) : super(key: key);
+class SolicitudHomeEstudiante extends StatefulWidget {
+  const SolicitudHomeEstudiante({Key? key}) : super(key: key);
 
   @override
-  State<SolicitudHome> createState() => SolicitudHomeState();
+  State<SolicitudHomeEstudiante> createState() => _SolicitudHomeEstudianteState();
 }
 
-class SolicitudHomeState extends State<SolicitudHome> {
+class _SolicitudHomeEstudianteState extends State<SolicitudHomeEstudiante> {
   List<Solicitud> responseData = [];
   late String _value;
 
@@ -50,7 +51,7 @@ class SolicitudHomeState extends State<SolicitudHome> {
     return ListView(
       children: <Widget>[
         ...responseData.map(
-          (e) => Card(
+              (e) => Card(
             elevation: 4,
             child: BlocProvider(
                 create: (context) => SolicitudBloc(
@@ -75,12 +76,9 @@ class SolicitudHomeState extends State<SolicitudHome> {
                     }
                     if (state is EmpresaYEstudianteListadoCorrecto) {
                       return ListTile(
-                        onTap: () => Navigator.pushNamed(
-                            context, '/solicitud_show',
-                            arguments: e.id),
                         trailing: Text(
-                          '${state.persona.nombres}',
-                          style: const TextStyle(color: Colors.black54)),
+                            '${state.persona.nombres}',
+                            style: const TextStyle(color: Colors.black54)),
                         leading: SizedBox(
                           height: double.infinity,
                           child: Icon(
@@ -116,6 +114,14 @@ class SolicitudHomeState extends State<SolicitudHome> {
       )
         ..add(SolicitudListEvent()),
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.red,
+          child: const Icon(Icons.add),
+          onPressed: () {
+            Navigator.pushNamed(context, '/solicitud_add');
+          },
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         bottomNavigationBar: BottomAppBar(
           color: Colors.blue[900],
           child: Row(
@@ -140,7 +146,7 @@ class SolicitudHomeState extends State<SolicitudHome> {
           centerTitle: true,
           backgroundColor: Colors.blue[900],
         ),
-        drawer: const DrawerAdmin(),
+        drawer: const DrawerEstudiante(),
         body: BlocBuilder<SolicitudBloc, SolicitudState>(
           builder: (context, state) {
             if (state is SolicitudLoadingState) {
@@ -151,9 +157,12 @@ class SolicitudHomeState extends State<SolicitudHome> {
             if (state is SolicitudSuccessListState) {
               agregarData(state.responseData.data);
               List<String> listaDeOpciones = <String>["A", "B", "C", "D"];
-              return listarResponseData();
+              return Center(
+                child: Text(
+                  'Listar solicitudes solo del estudiante'
+                )
+              );
             }
-
             if (state is SolicitudFailedState) {
               return Center(
                 child: Text(state.error.toString()),

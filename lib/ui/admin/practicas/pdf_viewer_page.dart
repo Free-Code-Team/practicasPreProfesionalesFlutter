@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:path/path.dart';
-
+import 'package:http/http.dart' as http;
 class PDFViewerPage extends StatefulWidget {
   final File? file;
 
