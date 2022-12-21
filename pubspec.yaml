@@ -20,7 +20,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.18.5 <3.0.0'
+  sdk: '>=2.17.6 <3.0.0'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -55,6 +55,31 @@ dependencies:
   dropdown_search: ^3.0.1
   dio: ^4.0.6
 
+  #dependencias usadas jhobany
+
+  file_picker: ^5.2.4
+
+  # Extras pdf
+  #firebase_core:
+  firebase_storage:
+  path_provider: ^2.0.9
+  #dio: ^4.0.6
+  gallery_saver: ^2.3.2
+  image_picker: ^0.8.4+9
+  path: ^1.8.1
+
+  #view pdf
+  flutter_pdfview:
+  #http:
+
+  fl_chart: 0.45.0
+
+  # url internet
+  url_launcher:
+
+  #fin de dependencias
+  
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -86,6 +111,20 @@ flutter:
       - assets/icons/google300.png
       - assets/icons/user.png
       - assets/icons/fondo.jpg
+      #jhobany
+      - assets/pdf.png
+      - assets/pdfplomo.png
+      - assets/requisito.png
+      - assets/requisitos.png
+      - assets/requisitos.gif
+      - assets/derechos.png
+      - assets/otros.png
+      - assets/otros.gif
+      - assets/procedimientos.gif
+      - assets/responsabilidades.png
+      - assets/responsabilidades.gif
+      - assets/check_list.gif
+      #fin jhobany
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -104,11 +143,11 @@ flutter:
   #       - asset: fonts/Schyler-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
+    # - family: Trajan Pro
+    #   fonts:
+    #     - asset: fonts/TrajanPro.ttf
+    #     - asset: fonts/TrajanPro_Bold.ttf
+    #       weight: 700
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
