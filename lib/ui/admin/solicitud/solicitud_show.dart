@@ -55,7 +55,8 @@ class SolicitudShow extends StatelessWidget {
                           backgroundColor: Colors.blue[900],
                           title: Text(
                               'Solicitud para la ${state.empresa.empresa}')),
-                      floatingActionButton: FloatingActionButton(
+                      floatingActionButton: state1.solicitud.estado == '0' ?
+                       null : FloatingActionButton(
                         backgroundColor: Colors.red,
                         child: const Icon(Icons.edit),
                         onPressed: () {
@@ -103,11 +104,28 @@ class SolicitudShow extends StatelessWidget {
                                       Row(
                                         children: [
                                           Text(
-                                            'Estudiante: ',
+                                            'Nombres: ',
                                             style: TextStyle(fontSize: 16),
                                           ),
                                           Text(
-                                            '${state.persona.nombres} ${state.persona.apellidos}',
+                                            '${state.persona.nombres}',
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                color: Colors.black54),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            'Apellidos: ',
+                                            style: TextStyle(fontSize: 16),
+                                          ),
+                                          Text(
+                                            '${state.persona.apellidos}',
                                             style: TextStyle(
                                                 fontSize: 16,
                                                 color: Colors.black54),

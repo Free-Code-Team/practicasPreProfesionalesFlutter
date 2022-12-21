@@ -1,16 +1,38 @@
-# practicas_pre_profesionales_flutter
+# Proyecto Integrador de Practicas pre-profesionales UPeU
 
-flutter proycto
+## Aportación y distribución de equipo
 
-## Getting Started
+Saul David Ytucayasi Savina:
+  - Creación de API y consumo con Patrón bloc
+  - Generación de carpetas y distribución de modulos
+  - Aportanciones en dependencias
+  - Modulo de practicas 
 
-This project is a starting point for a Flutter application.
+Jhobany Etduard Ticona Gonzalo:
+  - Interfaz de dashboard e implementación de profile con Firebase (DRAWER)
+  - Interfaz de Desconocido, cuando un usuario entra coN Google
 
-A few resources to get you started if this is your first Flutter project:
+Max Alexander Avalos Humpiri:
+  - Modulo de "Empresas", conexion y consumo de API haciendo uso del patrón Bloc en Flutter
+  - Creación de Modelo
+  - Implementación de un repository
+  - Uso de patrón bloc (Manejo de estados, etc.)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Brandon Everick Puma Mestas y Jack Steve Paricela Pongo: 
+  - Modulo de "solicitudes", conexion y consumo de API haciendo uso del patrón Bloc en Flutter
+  - Creación de Modelo
+  - Implementación de un repository
+  - Uso de patrón bloc (Manejo de estados, etc.)
+    
+Gabriel Matías Condori Cotrado: 
+  - Firebase conexión y Sistema de "Roles"
+  - Logueo con Google
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Yohel Aldahyr Morocco Mamani: 
+  - Sistema de Login y Registro con FireBase y patrón bloc
+
+Henrry Jhonatan Velasquez Rosas: 
+  - Modulo de "Usuarios", conexion y consumo de API haciendo uso del patrón Bloc en Flutter
+  - Creación de Modelo
+  - Implementación de un repository
+  - Uso de patrón bloc (Manejo de estados, etc.)

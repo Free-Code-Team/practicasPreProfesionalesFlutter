@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:practicas_pre_profesionales_flutter/bloc/auth/auth_bloc.dart';
 import 'package:practicas_pre_profesionales_flutter/repositories/auth_repository.dart';
+import 'package:practicas_pre_profesionales_flutter/ui/auth/sign_in.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DrawerEstudiante extends StatelessWidget {
@@ -8,9 +10,10 @@ class DrawerEstudiante extends StatelessWidget {
   const DrawerEstudiante({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser;
     return Drawer(
       child: BlocProvider(
-        create: (context) => AuthBloc(RepositoryProvider.of<AuthRepository>(context, listen: true)),
+        create: (context) => AuthBloc(RepositoryProvider.of<AuthRepository>(context, listen: false))..add(AutenticarEvent(user!.uid)),
         child: BlocBuilder<AuthBloc, AuthState>(
           builder: (context, state) {
             if (state is CargandoState) {
@@ -48,9 +51,9 @@ class DrawerEstudiante extends StatelessWidget {
                     leading: const Icon(
                       Icons.home,
                     ),
-                    title: const Text('Dashboard'),
+                    title: const Text('Hogar'),
                     onTap: () {
-                      Navigator.pushNamed(context, '/dashboard');
+                      Navigator.pushNamed(context, '/hogar_estudiante');
                     },
                   ),
                   ListTile(
@@ -59,25 +62,16 @@ class DrawerEstudiante extends StatelessWidget {
                     ),
                     title: const Text('Solicitudes'),
                     onTap: () {
-                      Navigator.pushNamed(context, '/solicitud_home');
+                      Navigator.pushNamed(context, '/mis_solicitudes_home');
                     },
                   ),
                   ListTile(
                     leading: const Icon(
                       Icons.business,
                     ),
-                    title: const Text('Empresas'),
+                    title: const Text('Practicas'),
                     onTap: () {
-                      Navigator.pushNamed(context, '/empresa_home');
-                    },
-                  ),
-                  ListTile(
-                    leading: const Icon(
-                      Icons.account_box,
-                    ),
-                    title: const Text('Estudiantes'),
-                    onTap: () {
-                      Navigator.pushNamed(context, '/estudiante_home');
+                      Navigator.pushNamed(context, '/mis_practicas_home');
                     },
                   ),
                 ],

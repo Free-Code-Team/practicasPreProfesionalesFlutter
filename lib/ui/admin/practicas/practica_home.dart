@@ -1,12 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:practicas_pre_profesionales_flutter/bloc/auth/auth_bloc.dart';
+import 'package:practicas_pre_profesionales_flutter/test/comp/customDrawer.dart';
 import 'package:practicas_pre_profesionales_flutter/ui/admin/drawer_admin.dart';
 import 'package:flutter/material.dart';
 import 'package:practicas_pre_profesionales_flutter/ui/auth/sign_in.dart';
-import 'package:practicas_pre_profesionales_flutter/ui/estudiante/drawer_estudiante.dart';
 
-class EstudianteUI extends StatelessWidget {
-  const EstudianteUI({Key? key}) : super(key: key);
+class PracticaHome extends StatelessWidget {
+  const PracticaHome({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +22,11 @@ class EstudianteUI extends StatelessWidget {
         },
         child: Scaffold(
           appBar: AppBar(
-            title: const Text('Estudiante'),
+            title: const Text('Practicas'),
             centerTitle: true,
             backgroundColor: Colors.blue[900],
           ),
-          drawer: const DrawerEstudiante(),
+          drawer: const DrawerAdmin(),
           bottomNavigationBar: BottomAppBar(
             color: Colors.blue[900],
             child: Row(
@@ -46,8 +46,10 @@ class EstudianteUI extends StatelessWidget {
               ],
             ),
           ),
-          body: const Center(
-            child: Text('Estudiante'),
+          body: Center(
+            child: MaterialButton(onPressed: () {
+              Navigator.pushNamed(context, '/viewPdf');
+            }, child: Text('Hola'),),
           ),
         ));
   }

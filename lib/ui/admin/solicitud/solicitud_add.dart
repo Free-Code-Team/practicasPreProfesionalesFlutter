@@ -20,9 +20,9 @@ class SolicitudAdd extends StatefulWidget {
 class _SolicitudAddState extends State<SolicitudAdd> {
   final _formKey = GlobalKey<FormState>();
   final tfRepresentante = TextEditingController();
-  final tfEstado = TextEditingController(text: '1');
-  final tfIdEstudiante = TextEditingController(text: '1');
-  final tfIdEmpresa = TextEditingController(text: '1');
+  final tfEstado = TextEditingController(text: '2');
+  final tfIdEstudiante = TextEditingController(text: '4');
+  final tfIdEmpresa = TextEditingController(text: '3');
   String? gender;
 
   @override
@@ -36,7 +36,7 @@ class _SolicitudAddState extends State<SolicitudAdd> {
       ),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Registrar empresa'),
+          title: const Text('Registrar solicitud'),
           backgroundColor: Colors.blue[900],
         ),
         floatingActionButton: BlocBuilder<SolicitudBloc, SolicitudState>(

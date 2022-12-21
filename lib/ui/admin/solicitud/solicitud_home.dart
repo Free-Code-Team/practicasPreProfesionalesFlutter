@@ -79,7 +79,7 @@ class SolicitudHomeState extends State<SolicitudHome> {
                             context, '/solicitud_show',
                             arguments: e.id),
                         trailing: Text(
-                          '${state.persona.nombres} ${state.persona.apellidos}',
+                          '${state.persona.nombres}',
                           style: const TextStyle(color: Colors.black54)),
                         leading: SizedBox(
                           height: double.infinity,

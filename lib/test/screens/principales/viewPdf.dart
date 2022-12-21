@@ -96,7 +96,7 @@ class _ViewPdfState extends State<ViewPdf> {
                               text: 'Abrir',
                               icon: Icons.open_in_new,
                               onClicked: () async {
-                                final url = 'files/COMENTARIO DEL CASO 1.pdf';
+                                final url = 'files/expo final de FDI PAREJA Y METODOS.pdf';
                                 final file = await PDFApi.loadFirebase(url);
 
                                 if (file == null) return;

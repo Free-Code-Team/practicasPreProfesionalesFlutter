@@ -76,11 +76,20 @@ class DrawerAdmin extends StatelessWidget {
                   ),
                   ListTile(
                     leading: const Icon(
-                      Icons.business,
+                      Icons.supervisor_account,
                     ),
-                    title: const Text('Usuarios'),
+                    title: const Text('Estudiantes'),
                     onTap: () {
                       Navigator.pushNamed(context, '/usuario_home');
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(
+                      Icons.work,
+                    ),
+                    title: const Text('Practicas'),
+                    onTap: () {
+                      Navigator.pushNamed(context, '/practica_home');
                     },
                   ),
                 ],

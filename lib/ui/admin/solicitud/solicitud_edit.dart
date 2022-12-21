@@ -16,7 +16,7 @@ class SolicitudEdit extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String estado = 'n';
+    String? estado = 'n';
     final items = ['n', '0', '1', '2', '3'];
     final args = ModalRoute.of(context)!.settings.arguments;
 
@@ -30,22 +30,27 @@ class SolicitudEdit extends StatelessWidget {
       child: BlocBuilder<SolicitudBloc, SolicitudState>(
         builder: (context, state) {
           if (state is SolicitudSuccessShowState) {
+            if (state.solicitud.estado == '0') {
+              estado = null;
+            }
             estado = state.solicitud.estado;
             return Scaffold(
-              appBar: AppBar(title: Text('${state.solicitud.estado}')),
+              appBar: AppBar(title: Text('Editar estado'), backgroundColor: Colors.blue[900],),
               floatingActionButton: FloatingActionButton(
                 backgroundColor: Colors.red,
                 child: const Icon(Icons.save),
                 onPressed: () {
-                  Solicitud solicitud = Solicitud(
-                      id: state.solicitud.id,
-                      representante: state.solicitud.representante,
-                      estado: state.solicitud.representante,
-                      idEstudiante: state.solicitud.idEstudiante,
-                      idEmpresa: state.solicitud.idEmpresa);
-                  BlocProvider.of<SolicitudBloc>(context)
-                      .add(SolicitudSaveEvent(solicitud, args as int));
-                  Navigator.pushNamed(context, '/solicitud_home');
+                  if (_formKey.currentState!.validate()) {
+                    Solicitud solicitud = Solicitud(
+                        id: state.solicitud.id,
+                        representante: state.solicitud.representante,
+                        estado: estado!,
+                        idEstudiante: state.solicitud.idEstudiante,
+                        idEmpresa: state.solicitud.idEmpresa);
+                    BlocProvider.of<SolicitudBloc>(context)
+                        .add(SolicitudSaveEvent(solicitud, args as int));
+                    Navigator.pushNamed(context, '/solicitud_home');
+                  }
                 },
               ),
               floatingActionButtonLocation:
@@ -72,6 +77,7 @@ class SolicitudEdit extends StatelessWidget {
               body: Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Form(
+                  key: _formKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[

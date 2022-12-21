@@ -7,6 +7,7 @@ import 'package:practicas_pre_profesionales_flutter/repositories/estudiante_repo
 import 'package:practicas_pre_profesionales_flutter/repositories/persona_repository.dart';
 import 'package:practicas_pre_profesionales_flutter/repositories/solicitud_repository.dart';
 import 'package:practicas_pre_profesionales_flutter/ui/admin/drawer_admin.dart';
+import 'package:practicas_pre_profesionales_flutter/ui/estudiante/drawer_estudiante.dart';
 
 class SolicitudHomeEstudiante extends StatefulWidget {
   const SolicitudHomeEstudiante({Key? key}) : super(key: key);
@@ -93,15 +94,10 @@ class _SolicitudHomeEstudianteState extends State<SolicitudHomeEstudiante> {
           RepositoryProvider.of<PersonaRepository>(context, listen: false))
         ..add(SolicitudListEvent()),
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-            child: const Icon(Icons.add),
-            onPressed: () {
-              Navigator.pushNamed(context, '/solicitud_add');
-            }),
         appBar: AppBar(
           title: const Text('Solicitudes'),
         ),
-        drawer: const DrawerAdmin(),
+        drawer: const DrawerEstudiante(),
         body: BlocBuilder<SolicitudBloc, SolicitudState>(
           builder: (context, state) {
             if (state is SolicitudLoadingState) {
@@ -112,9 +108,10 @@ class _SolicitudHomeEstudianteState extends State<SolicitudHomeEstudiante> {
             if (state is SolicitudSuccessListState) {
               agregarData(state.responseData.data);
               List<String> listaDeOpciones = <String>["A", "B", "C", "D"];
-              return listarResponseData();
+              return Center(
+                child: Text('listado de mis solicitudes'),
+              );
             }
-
             if (state is SolicitudFailedState) {
               return Center(
                 child: Text(state.error.toString()),
